@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const addUser = async (usuario) => {
     try {
         const { nombre, apellido, email, direccion, telefono, contrasena } = usuario;
-        const password = contrasena;    
+        const password = contrasena;
         if (!email || !password) {
             console.log("Datos incompletos, se deben completar todos antes de continuar.")
             throw { code: 400, message: "Datos incompletos." };
@@ -54,22 +54,41 @@ const verifyUser = async (email, password) => {
 };
 
 const getUser = async (email) => {
-    const values = [email];
-    const consulta = "SELECT * FROM usuario WHERE email = $1";
+    const queryText = "SELECT * FROM usuario WHERE email = $1";
+    const queryParams = [email];
     try {
-        const result = await pool.query(consulta, values);
-        usuario = result.rows[0];
-        rowCount = result.rowCount;
-        const {id_usuario, email, nombre, apellido, direccion, telefono, administrador} =usuario;
-        const usuario_estado={id_usuario, email, nombre, apellido, direccion, telefono, administrador}
-        return usuario_estado;
+        const response = await pool.query(queryText, queryParams);
+        user = response.rows[0];
+        rowCount = response.rowCount;
+        const { id_usuario, email, nombre, apellido, direccion, telefono, administrador } = user;
+        const user_state = { id_usuario, email, nombre, apellido, direccion, telefono, administrador }
+        return user_state;
     } catch (error) {
         throw { code: 500, message: "Hay un error interno en el sistema." };
+    }
+}
+
+const getUserById = async (id) => {
+    const queryText = 'SELECT * FROM usuario WHERE id_usuario = $1';
+    const queryParams = [id];
+    try {
+        const response = await pool.query(queryText, queryParams);
+        if (!response) {
+            throw { code: 404, message: 'Usuario no encontrado' };
+        }
+        user = response.rows[0];
+        rowCount = response.rowCount;
+        const { email, nombre, apellido, direccion, telefono } = user;
+        const user_state = { email, nombre, apellido, direccion, telefono }
+        return user_state;
+    } catch (error) {
+        throw { code: 500, message: 'Error al obtener la informacion del usuario' };
     }
 }
 
 module.exports = {
     addUser,
     verifyUser,
-    getUser
+    getUser,
+    getUserById
 }

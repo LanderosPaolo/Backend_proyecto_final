@@ -6,6 +6,7 @@ const middleware = require('../middleware/middleware')
 //Users
 router.post('/registrar', users.postUser);
 router.post('/iniciar_sesion', middleware.credencialVerify, users.loginUser);
+router.get('/perfil/:id_usuario', middleware.tokenValidation, users.getUserInfo);
 
 //Products
 router.post('/nuevo_producto', middleware.tokenValidation, products.postProduct);
