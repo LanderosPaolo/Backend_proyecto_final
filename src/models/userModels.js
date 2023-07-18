@@ -31,46 +31,31 @@ const addUser = async (usuario) => {
     }
 }
 
-const verificarCredenciales = async (email, password) => {
-
+const verifyUser = async (email, password) => {
     let usuario;
     let rowCount;
-
-    //Verificar que el email y password están en la base de datos
     const values = [email];
     const consulta = "SELECT * FROM usuario WHERE email = $1";
-
-    //Realizar consulta a la base de datos y verificar si hay conexión
     try {
         const result = await pool.query(consulta, values);
         usuario = result.rows[0];
         rowCount = result.rowCount;
-
     } catch (error) {
         throw { code: 500, message: "Hay un error interno en el sistema." };
     }
-
-    //Verificar si el usuario existe en la base de datos
     if (!usuario || !usuario.password) {
         throw { code: 401, message: "Usuario no existe en el sistema." };
     }
-
-    //Obtener la password encriptada desde la base de datos
     const { password: passwordEncriptada } = usuario;
-    //Encriptar la password antes de realizar la comparación
     const passwordEsCorrecta = bcrypt.compareSync(password, passwordEncriptada);
-
-    //Verificar que la password coincide con la que se encuentra en la base de datos
     if (!passwordEsCorrecta || !rowCount) {
         throw { code: 401, message: "Email o contraseña incorrecta." };
     }
 };
 
-const obtenerUsuario= async (email) => {
-    //Verificar que el email y password están en la base de datos
+const getUser = async (email) => {
     const values = [email];
     const consulta = "SELECT * FROM usuario WHERE email = $1";
-
     try {
         const result = await pool.query(consulta, values);
         usuario = result.rows[0];
@@ -78,35 +63,13 @@ const obtenerUsuario= async (email) => {
         const {id_usuario, email, nombre, apellido, direccion, telefono, administrador} =usuario;
         const usuario_estado={id_usuario, email, nombre, apellido, direccion, telefono, administrador}
         return usuario_estado;
-
     } catch (error) {
         throw { code: 500, message: "Hay un error interno en el sistema." };
     }
-
 }
-
-// const verifyUser = async (userLogin) => {
-//     const { email, password } = userLogin
-//     try {
-//         const response = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email])
-//         const user = response.rows[0]
-//         if (!user) {
-//             throw { code: 401, message: 'Usuario y/o contraseña incorrectos' };
-//         }
-//         const hashedPass = user.password
-//         const isPassCorrect = bcrypt.compareSync(password, hashedPass)
-//         if (!isPassCorrect) {
-//             throw { code: 401, message: 'Usuario y/o contraseña incorrectos' }
-//         }
-//         return response.rows
-//     } catch (error) {
-//         throw { code: 500, message: 'Error al verificar el usuario' };
-//     }
-// }
 
 module.exports = {
     addUser,
-    // verifyUser,
-    verificarCredenciales,
-    obtenerUsuario
+    verifyUser,
+    getUser
 }

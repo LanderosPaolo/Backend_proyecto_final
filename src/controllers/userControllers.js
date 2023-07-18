@@ -13,12 +13,12 @@ const postUser = async (req, res) => {
     }
 }
 
-const realizarLogin = async (req, res) => {
+const loginUser = async (req, res) => {
     try {
         const { email, contrasena } = req.body;
         const password=contrasena;
-        await query.verificarCredenciales(email, password);
-        const usuario_estado = await query.obtenerUsuario(email);
+        await query.verifyUser(email, password);
+        const usuario_estado = await query.getUser(email);
         const {id_usuario, administrador}=usuario_estado;
         const token = jwt.sign({ id_usuario, administrador, email }, process.env.JWT_SECRET);
         res.json({ message: 'Token enviado', token });
@@ -28,19 +28,7 @@ const realizarLogin = async (req, res) => {
     }
 }
 
-// const loginUser = async (req, res) => {
-//     try {
-//         const userLogin = req.body;
-//         await query.login(userLogin);
-//         const token = jwt.sign({ email: userLogin.email }, process.env.JWT_SECRET)
-//         return res.status(200).send(token);
-//     } catch (error) {
-//         return res.status(error.code).json({ mensaje: 'Error al iniciar sesion' });
-//     }
-// }
-
 module.exports = {
     postUser,
-    // loginUser,
-    realizarLogin
+    loginUser
 }

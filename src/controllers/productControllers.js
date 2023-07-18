@@ -1,23 +1,23 @@
 require('dotenv').config();
 const query = require('../models/productModels');
-const jwt = require('jsonwebtoken');
 
 const postProduct = async (req, res) => {
     try {
         const productInfo = req.body
-            await query.addProduct(productInfo)
-            return res.status(200).json({ mensaje: 'Producto agregado correctamente' });
-        } catch (error) {
+        await query.addProduct(productInfo)
+        return res.status(200).json({ mensaje: 'Producto agregado correctamente' });
+    } catch (error) {
         return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });
     }
 }
 
 const editProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const newInfo = req.body;
-        const result = await query.modifyProduct(newInfo, id)
-        return res.status(200).json(result);
+        const { id_producto } = req.params;
+        const data = req.body;
+        const result = await query.modifyProduct(id_producto, data);
+        console.log(result)
+        res.status(200).json({ message: 'Producto modificado' });
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });
     }

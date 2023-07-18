@@ -2,13 +2,10 @@ require('dotenv').config();
 const jwt = require("jsonwebtoken")
 
 function credencialVerify(req, res, next) {
-    // Verificar si no existen el email, el password o el token en la solicitud
     if (!req.body.email || !req.body.contrasena) {
-        // Si alguna de las credenciales no existe, enviar una respuesta de error
         console.log("Credenciales incompletas debe ingresar el email y password.");
         res.status(401).json({ message: 'Credenciales incompletas debe ingresar el email y password.' });
     } else {
-        // Si todas las credenciales existen, pasar al siguiente middleware o a la ruta
         console.log('Credenciales existen (email y password), puede continuar.')
         next();
     }

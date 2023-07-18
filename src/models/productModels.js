@@ -10,11 +10,11 @@ const addProduct = async (comicInfo) => {
     } catch (error) {
         throw { code: 500, message: 'Error al agregar el producto' };
     }
-};  
+};
 
-const modifyProduct = async (newInfo, id) => {
+const modifyProduct = async (id, newInfo) => {
     const { nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock } = newInfo;
-    const queryText = 'UPDATE producto SET nombre = $1, numero = $2, imagen_pequena = $3, imagen_grande = $4, detalle = $5, precio = $6, stock = $7 WHERE id = $8';
+    const queryText = 'UPDATE producto SET nombre = $1, numero = $2, imagen_pequena = $3, imagen_grande = $4, detalle = $5, precio = $6, stock = $7 WHERE id_producto = $8';
     const queryParams = [nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock, id];
     try {
         const response = await pool.query(queryText, queryParams);
@@ -39,7 +39,7 @@ const productDetails = async (id) => {
     const queryParams = [id]
     try {
         const response = await pool.query(queryText, queryParams);
-        if(!response) {
+        if (!response) {
             throw { code: 404, message: 'Producto no encontrado' };
         }
         return response.rows[0];
