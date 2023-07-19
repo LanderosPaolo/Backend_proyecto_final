@@ -3,8 +3,10 @@ const query = require('../models/productModels');
 
 const postProduct = async (req, res) => {
     try {
+        const { id_usuario } = req.datosToken;
         const productInfo = req.body
-        await query.addProduct(productInfo)
+        //console.log(productInfo);
+        await query.addProduct(productInfo, id_usuario)
         return res.status(200).json({ mensaje: 'Producto agregado correctamente' });
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });
