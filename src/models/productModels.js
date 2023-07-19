@@ -28,7 +28,7 @@ const getProducts = async (id_usuario) => {
     const queryText = `
         SELECT p.*, l.id_producto IS NOT NULL AS likes
         FROM producto AS p
-        LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1`;
+        LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 order by p.id_producto desc`;
     const queryParams = [id_usuario];
     try {
         const response = await pool.query(queryText, queryParams);
