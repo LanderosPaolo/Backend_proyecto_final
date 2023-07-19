@@ -17,6 +17,6 @@ router.get('/detalles/:id_producto', middleware.tokenValidation, products.getPro
 
 //likes
 router.post('/likes/:id_producto', middleware.tokenValidation, likes.postLike);
-router.delete('/dislike/:id_producto', middleware.tokenValidation, likes.deleteLike);
+router.delete('/dislikes/:id_producto', middleware.tokenValidation, likes.deleteLike);
 
 module.exports = router;
