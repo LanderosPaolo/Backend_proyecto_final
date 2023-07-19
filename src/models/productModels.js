@@ -24,21 +24,58 @@ const modifyProduct = async (id, newInfo) => {
     }
 };
 
-const getProducts = async () => {
-    const queryText = 'SELECT * FROM producto';
+const getProducts = async (id_usuario) => {
+    const queryText = `
+        SELECT p.*, l.id_producto IS NOT NULL AS likes
+        FROM producto AS p
+        LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1`;
+    const queryParams = [id_usuario];
     try {
-        const response = await pool.query(queryText);
-        return response.rows;
+        const response = await pool.query(queryText, queryParams);
+        const rows = response.rows;
+        // console.log(rows);
+        return rows;
     } catch (error) {
         throw { code: 500, message: 'Error al obtener los productos' };
     }
 };
 
+// const getProducts = async (id_usuario) => {
+//     const queryText = 'SELECT * FROM producto';
+//     try {
+//         const response = await pool.query(queryText);
+//         const rows = response.rows;
+//         const rows2 = [];
+//         for (let i = 0; i < rows.length; i++) {
+//             const row = rows[i];
+//             const id_producto = row.id_producto;
+//             const queryText2 = 'SELECT * FROM likes WHERE id_producto = $1 AND id_usuario = $2'
+//             const queryParams = [id_producto, id_usuario]
+//             const response2 = await pool.query(queryText2, queryParams)
+//             console.log(id_usuario)
+//             console.log(response2.rowCount)
+//             let likes;
+//             if (response2.rowCount === 0) {
+//                 likes = false
+//             } else {
+//                 likes = true
+//             }
+//             console.log("el like es:" + likes)
+//             rows2.push({id_producto: row.id_producto, nombre: row.nombre, numero: row.numero, imagen_pequena: row.imagen_pequena, imagen_grande: row.imagen_grande, detalle: row.detalle, precio: row.precio, stock: row.stock, id_usuario: row.id_usuario, likes: likes})
+//         }
+//         console.log(rows2);
+//         return rows2;
+//     } catch (error) {
+//         throw { code: 500, message: 'Error al obtener los productos' };
+//     }
+// };
+
 const productDetails = async (id) => {
-    const queryText = 'SELECT * FROM producto WHERE id_producto = $1';
+    const queryText = 'SELECT p.*, l.id_like IS NOT NULL AS likes FROM producto AS p LEFT JOIN likes AS l ON p.id_producto = l.id_producto WHERE p.id_producto = $1';
     const queryParams = [id]
     try {
         const response = await pool.query(queryText, queryParams);
+        console.log(response.rows[0])
         if (!response) {
             throw { code: 404, message: 'Producto no encontrado' };
         }

@@ -24,8 +24,9 @@ const editProduct = async (req, res) => {
 }
 
 const getProducts = async (req, res) => {
+    const { id_usuario } = req.datosToken;
     try {
-        const products = await query.getProducts()
+        const products = await query.getProducts(id_usuario)
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al obtener los productos' });
@@ -35,7 +36,8 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { id_producto } = req.params;
-        const result = await query.productDetails(id_producto);
+        const { id_usuario } = req.datosToken;
+        const result = await query.productDetails(id_producto, id_usuario);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });

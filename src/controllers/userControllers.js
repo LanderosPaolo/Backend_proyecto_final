@@ -36,7 +36,6 @@ const getUserInfo = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });
     }
-
 }
 
 module.exports = {
