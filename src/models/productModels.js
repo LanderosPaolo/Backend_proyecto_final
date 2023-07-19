@@ -70,12 +70,12 @@ const getProducts = async (id_usuario) => {
 //     }
 // };
 
-const productDetails = async (id) => {
-    const queryText = 'SELECT p.*, l.id_like IS NOT NULL AS likes FROM producto AS p LEFT JOIN likes AS l ON p.id_producto = l.id_producto WHERE p.id_producto = $1';
-    const queryParams = [id]
+const productDetails = async (id_producto, id_usuario) => {
+    const queryText = 'SELECT p.*, l.id_producto IS NOT NULL AS likes FROM producto AS p LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 WHERE p.id_producto=$2;';
+    const queryParams = [id_usuario,id_producto]
     try {
         const response = await pool.query(queryText, queryParams);
-        console.log(response.rows[0])
+        //console.log(response.rows[0])
         if (!response) {
             throw { code: 404, message: 'Producto no encontrado' };
         }
