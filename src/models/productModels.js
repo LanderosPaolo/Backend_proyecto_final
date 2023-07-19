@@ -1,10 +1,32 @@
 const pool = require('../config/db');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
-const addProduct = async (comicInfo) => {
+const addProduct = async (comicInfo, id_usuario) => {
     const { nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock } = comicInfo;
-    const queryText = 'INSERT INTO producto VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)';
-    const queryParams = [nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock];
+    
+    // Get the current date and time
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().replace(/[:.]/g, '');
+    
+    // Generate unique names for the images based on the date and time
+    const smallImageName = `small_${uuidv4()}.jpg`;
+    const largeImageName = `big_${uuidv4()}.jpg`;
+
+    const queryText = 'INSERT INTO producto VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)';
+    const queryParams = [nombre, numero, smallImageName, largeImageName, detalle, precio, stock, id_usuario];
+    
     try {
+        // Save the images in the folder back/src/assets/img/productos
+        const imagesFolderPath = path.join(__dirname, '..', 'assets', 'img', 'productos');
+        
+        const smallImageDestination = path.join(imagesFolderPath, smallImageName);
+        const largeImageDestination = path.join(imagesFolderPath, largeImageName);
+        
+        fs.writeFileSync(smallImageDestination, imagen_pequena);
+        fs.writeFileSync(largeImageDestination, imagen_grande);
+
         const response = await pool.query(queryText, queryParams);
         return response;
     } catch (error) {
