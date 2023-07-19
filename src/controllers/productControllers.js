@@ -5,7 +5,7 @@ const postProduct = async (req, res) => {
     try {
         const { id_usuario } = req.datosToken;
         const productInfo = req.body
-        //console.log(productInfo);
+
         await query.addProduct(productInfo, id_usuario)
         return res.status(200).json({ mensaje: 'Producto agregado correctamente' });
     } catch (error) {
