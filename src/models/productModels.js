@@ -5,11 +5,7 @@ const fs = require('fs');
 
 const addProduct = async (comicInfo, id_usuario) => {
     const { nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock } = comicInfo;
-    
-    // Get the current date and time
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().replace(/[:.]/g, '');
-    
+    //console.log(comicInfo);
     // Generate unique names for the images based on the date and time
     const smallImageName = `small_${uuidv4()}.jpg`;
     const largeImageName = `big_${uuidv4()}.jpg`;
@@ -18,15 +14,6 @@ const addProduct = async (comicInfo, id_usuario) => {
     const queryParams = [nombre, numero, smallImageName, largeImageName, detalle, precio, stock, id_usuario];
     
     try {
-        // Save the images in the folder back/src/assets/img/productos
-        const imagesFolderPath = path.join(__dirname, '..', 'assets', 'img', 'productos');
-        
-        const smallImageDestination = path.join(imagesFolderPath, smallImageName);
-        const largeImageDestination = path.join(imagesFolderPath, largeImageName);
-        
-        fs.writeFileSync(smallImageDestination, imagen_pequena);
-        fs.writeFileSync(largeImageDestination, imagen_grande);
-
         const response = await pool.query(queryText, queryParams);
         return response;
     } catch (error) {
