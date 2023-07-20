@@ -1,18 +1,9 @@
 const pool = require('../config/db');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
 
 const addProduct = async (comicInfo, id_usuario) => {
     const { nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock } = comicInfo;
-    //console.log(comicInfo);
-    // Generate unique names for the images based on the date and time
-    const smallImageName = `small_${uuidv4()}.jpg`;
-    const largeImageName = `big_${uuidv4()}.jpg`;
-
     const queryText = 'INSERT INTO producto VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)';
-    const queryParams = [nombre, numero, smallImageName, largeImageName, detalle, precio, stock, id_usuario];
-    
+    const queryParams = [nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock, id_usuario];
     try {
         const response = await pool.query(queryText, queryParams);
         return response;
@@ -81,7 +72,7 @@ const getProducts = async (id_usuario) => {
 
 const productDetails = async (id_producto, id_usuario) => {
     const queryText = 'SELECT p.*, l.id_producto IS NOT NULL AS likes FROM producto AS p LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 WHERE p.id_producto=$2;';
-    const queryParams = [id_usuario,id_producto]
+    const queryParams = [id_usuario, id_producto]
     try {
         const response = await pool.query(queryText, queryParams);
         //console.log(response.rows[0])
@@ -94,9 +85,25 @@ const productDetails = async (id_producto, id_usuario) => {
     }
 }
 
+const getProductosFavoritos = async (id_usuario) => {
+    const queryText = `
+    SELECT p.*, l.id_producto IS NOT NULL AS likes
+    FROM producto AS p
+    INNER JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 order by p.id_producto desc`;
+    const queryParams = [id_usuario];
+    try {
+        const response = await pool.query(queryText, queryParams);
+        const rows = response.rows;
+        return rows;
+    } catch (error) {
+        throw { code: 500, message: 'Error al obtener los productos' };
+    }
+}
+
 module.exports = {
     addProduct,
     modifyProduct,
     getProducts,
     productDetails,
+    getProductosFavoritos
 }

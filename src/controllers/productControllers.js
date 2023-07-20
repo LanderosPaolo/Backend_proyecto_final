@@ -46,9 +46,20 @@ const getProductById = async (req, res) => {
     }
 }
 
+const getFavoritos = async (req, res) => {
+    const { id_usuario } = req.datosToken;
+    try {
+        const products = await query.getProductosFavoritos(id_usuario)
+        return res.status(200).json(products);
+    } catch (error) {
+        return res.status(500).json({ mensaje: 'Error al obtener los productos' });
+    }
+}
+
 module.exports = {
     postProduct,
     editProduct,
     getProducts,
-    getProductById
+    getProductById,
+    getFavoritos
 }
