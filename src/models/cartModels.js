@@ -52,7 +52,8 @@ const addToCart = async (id_usuario, datosBody) => {
     const detalle_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total
     console.log(detalle_final);
     const queryOrdenDeCompra = 'INSERT INTO orden_compra (fecha_venta, detalle_productos, id_usuario) VALUES ($1, $2, $3)'
-    const params = [fecha_venta, detalle_final, id_usuario]
+    const params = [fechaActual, detalle_final, id_usuario]
+    console.log(fechaActual);
     await pool.query(queryOrdenDeCompra, params)
 }
 
