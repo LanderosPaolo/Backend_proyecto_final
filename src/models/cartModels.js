@@ -53,10 +53,8 @@ const addToCart = async (id_usuario, datosBody) => {
     console.log(detalle_final);
     const queryOrdenDeCompra = 'INSERT INTO orden_compra (fecha_venta, detalle_productos, id_usuario) VALUES ($1, $2, $3)'
     const params = [fechaActual, detalle_final, id_usuario]
-    console.log(fechaActual);
+    // console.log(fechaActual);
     await pool.query(queryOrdenDeCompra, params)
-
-    return detalle_final;
 }
 
 module.exports = {
