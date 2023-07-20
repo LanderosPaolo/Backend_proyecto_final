@@ -1,11 +1,16 @@
 const pool = require('../config/db');
 const { format } = require('date-fns');
+const userModel = require('../models/userModels');
 
 const addToCart = async (id_usuario, datosBody) => {
+    /* informacion del usuario para obtener la direccion */
+    const user = await userModel.getUserById(id_usuario);
+    const direccion = user.direccion
+    /* fin */
     const { detalle_productos } = datosBody;
     let detalle = [];
     const fechaActual = new Date();
-    const fecha_venta = format(fechaActual, 'yyyy-MM-dd');
+    const fecha_venta = format(fechaActual, 'dd-MM-yyyy');
     let total = 0;
     for (const detalle_producto of detalle_productos) {
         // console.log(detalle_producto.id_producto," ", detalle_producto.cantidad)
@@ -34,7 +39,8 @@ const addToCart = async (id_usuario, datosBody) => {
                 nombre,
                 numero,
                 fecha_venta,
-                totalUnitario
+                totalUnitario,
+                direccion
             }
             detalle.push(objeto);
         }
@@ -42,9 +48,9 @@ const addToCart = async (id_usuario, datosBody) => {
     let detalleP = detalle
         .map((objeto) => `Fecha: ${objeto.fecha_venta}, id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`)
         .join('\n');
+    detalleP += `\nDirección de entrega: ${direccion}`;
     const detalle_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total
     console.log(detalle_final);
-
     const queryOrdenDeCompra = 'INSERT INTO orden_compra (fecha_venta, detalle_productos, id_usuario) VALUES ($1, $2, $3)'
     const params = [fecha_venta, detalle_final, id_usuario]
     await pool.query(queryOrdenDeCompra, params)
