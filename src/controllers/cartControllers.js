@@ -6,8 +6,11 @@ const postCart = async (req, res) => {
         const datosBody = req.body;
         const { id_usuario } = req.datosToken;
         // console.log(datosBody);
-        await query.addToCart(id_usuario, datosBody);
-        return res.status(200).json({ mensaje: 'Orden de compra generada correctamente' });
+        const detalles_orden_compra = await query.addToCart(id_usuario, datosBody);
+        return res.status(200).json({ 
+                mensaje: 'Orden de compra generada correctamente',
+                Orden: detalles_orden_compra
+            });
     } catch (error) {
         return res.status(500).json({ mensaje: error.message });
     }
