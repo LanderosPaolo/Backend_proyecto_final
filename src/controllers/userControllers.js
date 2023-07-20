@@ -30,7 +30,7 @@ const loginUser = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
     try {
-        const { id_usuario } = req.params
+        const { id_usuario } = req.datosToken;
         const response = await query.getUserById(id_usuario)
         return res.status(200).json(response);
     } catch (error) {

@@ -39,6 +39,18 @@ const getProducts = async (id_usuario) => {
         throw { code: 500, message: 'Error al obtener los productos' };
     }
 };
+const getPublicaciones = async () => {
+    const queryText = `
+        SELECT p.* FROM producto AS p order by p.id_producto desc`;
+    try {
+        const response = await pool.query(queryText);
+        const rows = response.rows;
+        // console.log(rows);
+        return rows;
+    } catch (error) {
+        throw { code: 500, message: 'Error al obtener los productos' };
+    }
+};
 
 // const getProducts = async (id_usuario) => {
 //     const queryText = 'SELECT * FROM producto';
@@ -105,5 +117,6 @@ module.exports = {
     modifyProduct,
     getProducts,
     productDetails,
-    getProductosFavoritos
+    getProductosFavoritos,
+    getPublicaciones
 }
