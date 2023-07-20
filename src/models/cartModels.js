@@ -55,6 +55,7 @@ const addToCart = async (id_usuario, datosBody) => {
     const params = [fechaActual, detalle_final, id_usuario]
     // console.log(fechaActual);
     await pool.query(queryOrdenDeCompra, params)
+    return detalle_final;
 }
 
 module.exports = {
