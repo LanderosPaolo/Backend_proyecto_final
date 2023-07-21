@@ -14,6 +14,16 @@ const postCart = async (req, res) => {
     }
 }
 
+const getOrdenes = async (req, res) => {
+    try {
+        const products = await query.ordenesCompras()
+        return res.status(200).json(products);
+    } catch (error) {
+        return res.status(500).json({ mensaje: 'Error al obtener las ordenes de compra' });
+    }
+}
+
 module.exports = {
-    postCart
+    postCart,
+    getOrdenes
 }

@@ -17,13 +17,16 @@ router.get('/productos', middleware.tokenValidation, products.getProducts);
 router.get('/detalles/:id_producto', middleware.tokenValidation, products.getProductById);
 router.get('/favoritos', middleware.tokenValidation, products.getFavoritos)
 router.get('/publicaciones', middleware.tokenValidation, products.getPublicaciones);
-
+router.get('/producto/:id_producto', middleware.tokenValidation, products.getProductoModificar);
 
 //likes
 router.post('/likes/:id_producto', middleware.tokenValidation, likes.postLike);
 router.delete('/dislikes/:id_producto', middleware.tokenValidation, likes.deleteLike);
 
 //carrito
-router.post('/carrito', middleware.tokenValidation, cart.postCart)
+router.post('/carrito', middleware.tokenValidation, cart.postCart);
+
+//ordenes
+router.get('/orden_compras', middleware.tokenValidation, cart.getOrdenes)
 
 module.exports = router;

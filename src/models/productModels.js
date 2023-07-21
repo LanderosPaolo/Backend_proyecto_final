@@ -112,11 +112,23 @@ const getProductosFavoritos = async (id_usuario) => {
     }
 }
 
+const productoModificar = async (id_producto) => {
+    const queryText = 'SELECT * FROM producto WHERE id_producto = $1'
+    const queryParams = [id_producto]
+    try {
+        const response = await pool.query(queryText, queryParams)
+        return response.rows[0]
+    } catch (error) {
+        throw { code: 500, message: 'Error al obtener los productos' };
+    }
+}
+
 module.exports = {
     addProduct,
     modifyProduct,
     getProducts,
     productDetails,
     getProductosFavoritos,
-    getPublicaciones
+    getPublicaciones,
+    productoModificar
 }

@@ -66,11 +66,22 @@ const getFavoritos = async (req, res) => {
     }
 }
 
+const getProductoModificar = async (req, res) => {
+    const { id_producto } = req.params;
+    try {
+        const productInfo = await query.productoModificar(id_producto);
+        return res.status(200).json(productInfo);
+    } catch (error) {
+        return res.status(500).json({ mensaje: 'Error al obtener el producto a modificar' });
+    }
+}
+
 module.exports = {
     postProduct,
     editProduct,
     getProducts,
     getProductById,
     getFavoritos,
-    getPublicaciones
+    getPublicaciones,
+    getProductoModificar
 }
