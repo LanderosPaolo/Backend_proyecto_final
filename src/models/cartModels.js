@@ -55,8 +55,8 @@ const addToCart = async (id_usuario, datosBody) => {
         }
     }
 
-    let detalleP = detalle.map((objeto) => `Fecha: ${objeto.fecha_venta}, id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`).join('\n');
-    detalleP += `\nDirección de entrega: ${direccion}`;
+    let detalleP = detalle.map((objeto) => `id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`).join('\n');
+    detalleP += `\nFecha de compra: ${fecha_venta}\nDirección de entrega: ${direccion}`;
     const detalle_casi_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total;
 
     //En caso de que no exista stock o que si exista 
