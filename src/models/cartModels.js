@@ -28,7 +28,7 @@ const addToCart = async (id_usuario, datosBody) => {
         const stockNuevo = stock - cantidad
         
         //Si el stock es negativo no agregar al total:
-        if (stockNuevo<=0) total = total + 0
+        if (stockNuevo<0) total = total + 0
         else  total = total + totalUnitario
 
         if (stockNuevo < 0) {
