@@ -9,6 +9,7 @@ const addToCart = async (id_usuario, datosBody) => {
     /* fin */
     const { detalle_productos } = datosBody;
     let detalle = [];
+    let detalle_sin_stock=[]
     const fechaActual = new Date();
     const fecha_venta = format(fechaActual, 'dd-MM-yyyy');
     let total = 0;
@@ -22,11 +23,19 @@ const addToCart = async (id_usuario, datosBody) => {
         // console.log(result.rows[0]);
         const { id_producto, stock, precio, nombre, numero } = result.rows[0];
         const totalUnitario = precio * cantidad
-        total = total + totalUnitario
+        
         /* --> Actualización del stock de producto <--- */
         const stockNuevo = stock - cantidad
+        
+        //Si el stock es negativo no agregar al total:
+        if (stockNuevo<=0) total = total + 0
+        else  total = total + totalUnitario
+
         if (stockNuevo < 0) {
-            console.log(`No hay stock suficiente de producto: ${nombre}, número: ${numero}. No se agrega a la orden de compra. `)
+            const frase=`Producto: ${nombre}, número: ${numero}. No se agrega a la orden de compra.`
+            console.log(frase)
+            detalle_sin_stock += frase+'\n';
+
         } else {
             const queryStock = 'UPDATE producto SET stock = $1 WHERE id_producto = $2'
             const queryParamsStock = [stockNuevo, id_producto]
@@ -45,11 +54,19 @@ const addToCart = async (id_usuario, datosBody) => {
             detalle.push(objeto);
         }
     }
-    let detalleP = detalle
-        .map((objeto) => `Fecha: ${objeto.fecha_venta}, id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`)
-        .join('\n');
+    let detalleP = detalle.map((objeto) => `Fecha: ${objeto.fecha_venta}, id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`).join('\n');
     detalleP += `\nDirección de entrega: ${direccion}`;
-    const detalle_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total
+    const detalle_casi_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total;
+
+    //En caso de que no exista stock o que si exista 
+    let detalle_final;
+    if (detalle_sin_stock.length!=0)  {
+        detalle_final=detalle_casi_final + "\n ----------------\n"+"Comics que no fueron agregados por falta de stock: \n"+detalle_sin_stock;
+    }else{
+        detalle_final=detalle_casi_final
+    }
+    //Fin En caso de que no exista stock o que si exista 
+
     console.log(detalle_final);
     const queryOrdenDeCompra = 'INSERT INTO orden_compra (fecha_venta, detalle_productos, id_usuario) VALUES ($1, $2, $3)'
     const params = [fechaActual, detalle_final, id_usuario]
