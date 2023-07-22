@@ -80,7 +80,7 @@ const addToCart = async (id_usuario, datosBody) => {
 }
 
 const ordenesCompras = async () => {
-    const queryText = "SELECT * FROM orden_compra";
+    const queryText = "SELECT * FROM orden_compra order by id_orden_compra desc";
     try {
         const response = await pool.query(queryText);
         return response.rows
