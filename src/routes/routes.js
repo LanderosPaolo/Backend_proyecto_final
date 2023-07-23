@@ -28,5 +28,6 @@ router.post('/carrito', middleware.tokenValidation, cart.postCart);
 
 //ordenes
 router.get('/orden_compras', middleware.tokenValidation, cart.getOrdenes)
+router.put('/estado', middleware.tokenValidation, cart.putEstado)
 
 module.exports = router;

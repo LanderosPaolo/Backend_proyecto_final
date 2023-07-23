@@ -22,8 +22,20 @@ const getOrdenes = async (req, res) => {
         return res.status(500).json({ mensaje: 'Error al obtener las ordenes de compra' });
     }
 }
+const putEstado = async (req, res) => {
+    try {
+        const datosBody = req.body;
+        const { id_usuario } = req.datosToken;
+        // console.log(datosBody);
+        await query.changeEstado(id_usuario, datosBody);
+        return res.status(200).json({ mensaje: 'Estado cambiado'});
+    } catch (error) {
+        return res.status(500).json({ mensaje: error.message });
+    }
+}
 
 module.exports = {
     postCart,
-    getOrdenes
+    getOrdenes,
+    putEstado
 }

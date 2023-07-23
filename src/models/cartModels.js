@@ -2,6 +2,14 @@ const pool = require('../config/db');
 const { format } = require('date-fns');
 const userModel = require('../models/userModels');
 
+const changeEstado= async (id_usuario, datosBody) => {
+
+    const {id_orden_compra, id_estado} = datosBody;
+    const queryText = '	UPDATE orden_compra SET id_estado=$1 WHERE id_orden_compra=$2;'
+    const queryParams = [id_estado, id_orden_compra]
+    const result = await pool.query(queryText, queryParams);
+}
+
 const addToCart = async (id_usuario, datosBody) => {
     /* informacion del usuario para obtener la direccion */
     const user = await userModel.getUserById(id_usuario);
@@ -80,7 +88,9 @@ const addToCart = async (id_usuario, datosBody) => {
 }
 
 const ordenesCompras = async () => {
-    const queryText = "SELECT * FROM orden_compra order by id_orden_compra desc";
+    const queryText = `	SELECT a.*, b.nombre AS estado FROM orden_compra AS a 
+	INNER JOIN estado AS b ON a.id_estado=b.id_estado
+	order BY a.id_orden_compra desc`;
     try {
         const response = await pool.query(queryText);
         return response.rows
@@ -91,5 +101,6 @@ const ordenesCompras = async () => {
 
 module.exports = {
     addToCart,
-    ordenesCompras
+    ordenesCompras,
+    changeEstado
 }
