@@ -1,6 +1,22 @@
-# Nombre del Proyecto
+# Backend Comicskites
 
 Backend para una aplicación de venta de comics y envío físico, llamada comicskites.  
+
+¡Claro! Aquí tienes un menú que te permite navegar directamente a cada sección del texto:
+
+1. [Prerrequisitos](#prerrequisitos)
+2. [Instalación](#instalación)
+3. [Configuración](#configuración)
+4. [Base de Datos](#base-de-datos)
+5. [Descripción de Rutas](#descripción-de-rutas)
+   - [Rutas de Usuarios](#rutas-de-usuarios)
+   - [Rutas de Productos](#rutas-de-productos)
+   - [Rutas de Likes](#rutas-de-likes)
+   - [Rutas del Carrito](#rutas-del-carrito)
+   - [Rutas de Órdenes](#rutas-de-órdenes)
+6. [Desarrollo](#desarrollo)
+
+Haz clic en los enlaces para saltar directamente a la sección que deseas leer. ¡Disfruta explorando el proyecto de comicskites!
 
 ## Prerrequisitos
 
@@ -76,7 +92,7 @@ A continuación se detallan las rutas disponibles en el proyecto:
 
 **Nota**: Las rutas que requieren validación del token (`middleware.tokenValidation`) implican que el usuario debe estar autenticado para acceder a ellas. Además, se debe verificar la credencial antes de iniciar sesión (`middleware.credencialVerify`).
 
-## Desarrollo
+## Uso
 
 Para ejecutar el servidor en modo de desarrollo (con nodemon para recarga automática), usa el siguiente comando:
 
