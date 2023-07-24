@@ -2,8 +2,6 @@
 
 Backend para una aplicación de venta de comics y envío físico, llamada comicskites.  
 
-¡Claro! Aquí tienes un menú que te permite navegar directamente a cada sección del texto:
-
 1. [Prerrequisitos](#prerrequisitos)
 2. [Instalación](#instalación)
 3. [Configuración](#configuración)
