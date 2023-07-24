@@ -1,0 +1,555 @@
+openapi: 3.0.3
+info:
+  title: API proyecto final - Desafío LATAM.
+  description: Esta API se encarga de almacenar información de comics en la base
+    de datos.
+  version: 1.0.0
+servers:
+- url: https://localhost:3000/
+tags:
+- name: Sección pública
+
+- name: Sección privada usuarios
+
+- name: Sección privada administrador
+
+paths:
+  /registrar:
+    post:
+      tags:
+      - Sección pública
+      summary: Inserta la informacion de un nuevo usuario a la base de datos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: Nombre del usuario.
+                apellido:
+                  type: string
+                  description: Apellido del usuario.
+                email:
+                  type: string
+                  format: email
+                  description: Correo electronico del usuario.
+                direccion:
+                  type: string
+                  description: Direccion del usuario.
+                telefono:
+                  type: string
+                  description: Número telefonico del usuario.
+                contrasena:
+                  type: string
+                  description: Contraseña del usuario.
+        required: true
+      responses:
+        200:
+          description: Usuario creado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Mensaje de confirmación del registro.
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /iniciar_sesion:
+    post:
+      tags:
+      - Sección pública
+      summary: Permite a los usuarios iniciar sesion en la web y obtener
+        un token de acceso.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Correo electronico registrado por el usuario.
+                contrasena:
+                  type: string
+                  description: Contraseña registrada por el usuario.
+        required: true
+      responses:
+        200:
+          description: Inicio de sesión autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Token enviado
+                  token:
+                    type: string
+                    description: Token de acceso para autenticar las solicitudes.
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /perfil:
+    get:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Permite al usuario ver los datos con los que se ha registrado.
+      security:
+        - BearerAuth: []
+      parameters: []
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nombre:
+                    type: string
+                    description: Nombre del usuario.
+                  apellido:
+                    type: string
+                    description: Apellido del usuario.
+                  direccion:
+                    type: string
+                    description: Direccion del usuario.
+                  telefono:
+                    type: string
+                    description: Número telefonico del usuario.
+                  email:
+                    type: string
+                    format: email
+                    description: Correo electronico del usuario.
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /productos:
+    get:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Permite a los usuarios logueados ver todos los productos en la
+        web.
+      security:
+        - BearerAuth: []
+      parameters: []
+      responses:
+        200:
+          description: Devuela la lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/producto'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /detalles/{id_producto}:
+    get:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Permite tener una vista detallada del producto
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id_producto
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Devuelve el detalle del producto señalado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/producto'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /favoritos:
+    get:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Obtener productos favoritos del usuario
+      security:
+        - BearerAuth: []
+      parameters: []
+      responses:
+        200:
+          description: Devuelve los productos marcados con "like"
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/producto'
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /orden_compras:
+    get:
+      tags:
+        - Sección privada administrador
+      summary: Permite ver todas las ordenes de compras generadas.
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Devuela la lista de ordenes de compras
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ordenes_compras'
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /producto/{id_producto}:
+    get:
+      tags:
+        - Sección privada administrador
+      summary: Permite al usuario obtener el producto a modificar.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id_producto
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Devuelve todos los datos del producto señalado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/producto_modificar'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /nuevo_producto:
+    post:
+      tags:
+        - Sección privada administrador
+      summary: Permite que el administrador de la web pueda agregar nuevos 
+        productos.
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+        required: true
+      responses:
+        200:
+          description: Producto registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Producto agregado.
+        500:
+          $ref: '#/components/responses/ServerError'
+        
+  /like/{id_producto}:
+    post:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Permite dar "like" a los productos y guardarlos en la base de 
+        datos.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id_producto
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Producto agregado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Like agregado correctamente.
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /carrito:
+    post:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Genera una orden de compra.
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                detalle_productos:
+                  type: array
+                  description: Detalles de los productos a comprar.
+                  items:
+                    $ref: '#/components/schemas/detalle_producto'
+        required: true
+      responses:
+        200:
+          description: Producto agregado al carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    description: orden de compra generada correctamente.
+                  detalle_final:
+                    type: object
+        500:
+          $ref: '#/components/responses/ServerError'
+  
+  /editar_producto/{id_producto}:
+    put:
+      tags:
+        - Sección privada administrador
+      summary: Permite al administrador modificar un producto.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id_producto
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+      responses:
+        200:
+          description: Producto modificado.
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+  /estado:
+    put:
+      tags:
+        - Sección privada administrador
+      summary: Permite cambiar el estado de la orden de compra
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/estado'
+      responses:
+        200:
+          description: Estado cambiado.
+        500:
+          $ref: '#/components/responses/ServerError'
+  
+  /dislike/{id_producto}:
+    delete:
+      tags:
+        - Sección privada usuarios
+        - Sección privada administrador
+      summary: Permite quitar el "like" a los productos y eliminarlos de la 
+        base de datos.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id_producto
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: El "like" fue borrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Borrado.
+        500:
+          $ref: '#/components/responses/ServerError'
+
+components:
+
+  responses:
+    Unauthorized:
+      description: (Unauthorized) no existe autorización o el token no es válido
+    NotFound:
+      description: (NotFound) no se encontró la información
+    BadRequest:
+      description: (BadRequest) los datos enviados son incorrectos o hay datos 
+        obligatorios no enviados
+    ServerError:
+      description: Error en el servidor
+      
+  schemas:
+    estado:
+      type: object
+      properties:
+        id_orden_compra:
+          type: integer
+        id_estado:
+          type: integer
+  
+    detalle_producto:
+      type: object
+      properties:
+        id_producto:
+          type: integer
+        cantidad:
+          type: integer
+          
+    ordenes_compras:
+      type: object
+      properties:
+        id_orden_compra:
+          type: integer
+        fecha_venta:
+          type: string
+        detalles_productos:
+          type: string
+        id_usuario:
+          type: integer
+        id_estado:
+          type: integer
+        estado:
+          type: string
+    
+    producto_modificar:
+      type: object
+      properties:
+        id_producto:
+          type: integer
+          description: Id del producto.
+        nombre:
+          type: string
+          description: Nombre del prudcot a publicar.
+        numero:
+          type: integer
+          description: Número del volumen del producto a publicar.
+        imagen_pequena:
+          type: string
+          description: Imagen en miniatura del producto.
+        imagen_grande:
+          type: string
+          description: Imagen normal del producto.
+        detalle:
+          type: string
+          description: Breve explicacion del producto.
+        precio:
+          type: integer
+          description: Valor de venta del producto.
+        stock:
+          type: integer
+          description: Stock del producto.
+        id_usuario:
+          type: integer
+          description: Id del administrador que publicó el producto.
+  
+    producto:
+      type: object
+      properties:
+        id_producto:
+          type: integer
+          description: Id del producto.
+        nombre:
+          type: string
+          description: Nombre del prudcot a publicar.
+        numero:
+          type: integer
+          description: Número del volumen del producto a publicar.
+        imagen_pequena:
+          type: string
+          description: Imagen en miniatura del producto.
+        imagen_grande:
+          type: string
+          description: Imagen normal del producto.
+        detalle:
+          type: string
+          description: Breve explicacion del producto.
+        precio:
+          type: integer
+          description: Valor de venta del producto.
+        stock:
+          type: integer
+          description: Stock del producto.
+        id_usuario:
+          type: integer
+          description: Id del administrador que publicó el producto.
+        likes:
+          type: boolean
+          description: El producto tiene o no tiene "like"
+          
+    productos:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre del prudcot a publicar.
+        numero:
+          type: integer
+          description: Número del volumen del producto a publicar.
+        stock:
+          type: integer
+          description: Stock del producto.
+        imagen_pequeña:
+          type: string
+          description: Imagen en miniatura del producto.
+        imagen_grande:
+          type: string
+          description: Imagen normal del producto.
+        precio:
+          type: number
+          description: Valor de venta del producto
+        detalle:
+          type: string
+          description: Breve explicacion del producto.
+          
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
