@@ -2,6 +2,12 @@
 
 Backend para una aplicación de venta de comics y envío físico, llamada comicskites.  
 
+## Integrantes grupo 7
+
+- Lorenzo Chacano
+- Paolo Landeros
+- Leonardo Villagrán
+
 1. [Prerrequisitos](#prerrequisitos)
 2. [Instalación](#instalación)
 3. [Configuración](#configuración)
