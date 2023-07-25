@@ -6,8 +6,27 @@ const changeEstado= async (id_usuario, datosBody) => {
 
     const {id_orden_compra, id_estado} = datosBody;
     const queryText = '	UPDATE orden_compra SET id_estado=$1 WHERE id_orden_compra=$2;'
-    const queryParams = [id_estado, id_orden_compra]
+    const queryParams = [id_estado, id_orden_compra];
     const result = await pool.query(queryText, queryParams);
+
+    if (result.rowCount===1) {
+        const queryText2 = `
+        SELECT a.*, b.nombre AS estado FROM orden_compra AS a 
+        INNER JOIN estado AS b ON a.id_estado=b.id_estado
+        WHERE a.id_orden_compra=$1
+        order BY a.id_orden_compra desc`;
+
+        const queryParams2 = [id_orden_compra];
+        const result2 = await pool.query(queryText2, queryParams2);
+        console.log ("orden de compra: ", result2.rows[0])
+        return result2.rows[0];
+    }
+    else{
+        return "error";
+    }
+    
+
+
 }
 
 const addToCart = async (id_usuario, datosBody) => {
@@ -98,9 +117,19 @@ const ordenesCompras = async () => {
         throw { code: 500, message: "Hay un error interno en el sistema." };
     }
 }
+const obtenerEstados = async () => {
+    const queryText = `	SELECT * from estado order by id_estado`;
+    try {
+        const response = await pool.query(queryText);
+        return response.rows
+    } catch (error) {
+        throw { code: 500, message: "Hay un error interno en el sistema." };
+    }
+}
 
 module.exports = {
     addToCart,
     ordenesCompras,
-    changeEstado
+    changeEstado,
+    obtenerEstados
 }
