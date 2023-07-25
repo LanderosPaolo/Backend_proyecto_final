@@ -92,6 +92,7 @@ A continuación se detallan las rutas disponibles en el proyecto:
 ### Rutas de Órdenes
 
 - **GET** `/orden_compras`: Obtener las órdenes de compra del usuario. Se requiere validación del token para acceder a esta ruta.
+- **GET** `/estados`: Obtener todos los estados posibles de una orden de compra. Se requiere validación del token para acceder a esta ruta.
 - **PUT** `/estado`: Actualizar el estado de una orden. Se requiere validación del token para actualizar el estado de una orden.
 
 **Nota**: Las rutas que requieren validación del token (`middleware.tokenValidation`) implican que el usuario debe estar autenticado para acceder a ellas. Además, se debe verificar la credencial antes de iniciar sesión (`middleware.credencialVerify`).
@@ -104,4 +105,4 @@ Para ejecutar el servidor en modo de desarrollo (con nodemon para recarga autom�
 npm run dev
 ```
 
-El servidor estará en funcionamiento en `http://localhost:3000/`.
+El servidor se ejecutará en la ruta `http://localhost:3000/`.
