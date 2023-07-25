@@ -47,6 +47,9 @@ describe('Operaciones CRUD de productos', () => {
             .set('Authorization', `Bearer ${token}`)
             .send()
 
-        expect(response.statusCode).toBe(200)
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toBeDefined();
+        expect(response.body).toBeInstanceOf(Array);
+        expect(response.body.length).toBeGreaterThan(0);
     });
 })
