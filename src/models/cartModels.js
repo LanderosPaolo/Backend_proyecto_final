@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const { format } = require('date-fns');
 const userModel = require('../models/userModels');
+const numbers = require('../config/numbers');
 
 const changeEstado= async (id_usuario, datosBody) => {
 
@@ -82,9 +83,9 @@ const addToCart = async (id_usuario, datosBody) => {
         }
     }
 
-    let detalleP = detalle.map((objeto) => `id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${objeto.numero}, cantidad: ${objeto.cantidad}, precio: ${objeto.precio}, total: ${objeto.totalUnitario},`).join('\n');
+    let detalleP = detalle.map((objeto) => `id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${numbers.formatLatin(objeto.numero)}, cantidad: ${numbers.formatLatin(objeto.cantidad)}, precio: ${numbers.formatLatin(objeto.precio)}, total: ${numbers.formatLatin(objeto.totalUnitario)},`).join('\n');
     detalleP += `\nFecha de compra: ${fecha_venta}\nDirección de entrega: ${direccion}`;
-    const detalle_casi_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + total;
+    const detalle_casi_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + numbers.formatLatin(total);
 
     //En caso de que no exista stock o que si exista 
     let detalle_final;
