@@ -42,11 +42,12 @@ const getProducts = async (id_usuario, pageSize, offset) => {
         throw { code: 500, message: 'Error al obtener los productos' };
     }
 };
-const getPublicaciones = async () => {
+const getPublicaciones = async (pageSize,offset) => {
     const queryText = `
-        SELECT p.* FROM producto AS p order by p.id_producto desc`;
+        SELECT p.* FROM producto AS p order by p.id_producto desc  LIMIT $1 OFFSET $2`;
+    const queryParams = [pageSize,offset];
     try {
-        const response = await pool.query(queryText);
+        const response = await pool.query(queryText, queryParams);
         const rows = response.rows;
         // console.log(rows);
         return rows;
@@ -100,12 +101,13 @@ const productDetails = async (id_producto, id_usuario) => {
     }
 }
 
-const getProductosFavoritos = async (id_usuario) => {
+const getProductosFavoritos = async (id_usuario, pageSize, offset) => {
     const queryText = `
     SELECT p.*, l.id_producto IS NOT NULL AS likes
     FROM producto AS p
-    INNER JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 order by p.id_producto desc`;
-    const queryParams = [id_usuario];
+    INNER JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 order by p.id_producto desc
+    LIMIT $2 OFFSET $3`;
+    const queryParams = [id_usuario, pageSize, offset];
     try {
         const response = await pool.query(queryText, queryParams);
         const rows = response.rows;

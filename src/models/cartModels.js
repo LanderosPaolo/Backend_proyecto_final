@@ -107,12 +107,13 @@ const addToCart = async (id_usuario, datosBody) => {
     }
 }
 
-const ordenesCompras = async () => {
+const ordenesCompras = async (pageSize,offset) => {
     const queryText = `	SELECT a.*, b.nombre AS estado FROM orden_compra AS a 
 	INNER JOIN estado AS b ON a.id_estado=b.id_estado
-	order BY a.id_orden_compra desc`;
+	order BY a.id_orden_compra desc LIMIT $1 OFFSET $2`;
+    const queryParams = [pageSize,offset];
     try {
-        const response = await pool.query(queryText);
+        const response = await pool.query(queryText,queryParams);
         return response.rows
     } catch (error) {
         throw { code: 500, message: "Hay un error interno en el sistema." };

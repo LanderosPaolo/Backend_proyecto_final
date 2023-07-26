@@ -27,9 +27,9 @@ const editProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     const { id_usuario } = req.datosToken;
-    const Number = parseInt(req.query.pageNumber) || 1;
+    const Number = parseInt(req.query.page) || 1;
     const PageNumber = Math.max(Number, 1);
-    const pageSize = parseInt(req.query.pageSize) || 100;
+    const pageSize = parseInt(req.query.size) || 100;
     const offset = (PageNumber - 1) * pageSize;
 
     try {
@@ -41,8 +41,12 @@ const getProducts = async (req, res) => {
 }
 const getPublicaciones = async (req, res) => {
     try {
+        const Number = parseInt(req.query.page) || 1;
+        const PageNumber = Math.max(Number, 1);
+        const pageSize = parseInt(req.query.size) || 100;
+        const offset = (PageNumber - 1) * pageSize;
 
-        const products = await query.getPublicaciones()
+        const products = await query.getPublicaciones(pageSize,offset)
         //console.log(products)
         return res.status(200).json(products);
     } catch (error) {
@@ -63,8 +67,13 @@ const getProductById = async (req, res) => {
 
 const getFavoritos = async (req, res) => {
     const { id_usuario } = req.datosToken;
+    const Number = parseInt(req.query.page) || 1;
+    const PageNumber = Math.max(Number, 1);
+    const pageSize = parseInt(req.query.size) || 10000;
+    const offset = (PageNumber - 1) * pageSize;
+
     try {
-        const products = await query.getProductosFavoritos(id_usuario)
+        const products = await query.getProductosFavoritos(id_usuario, pageSize, offset)
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al obtener los productos' });

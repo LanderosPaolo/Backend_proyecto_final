@@ -15,8 +15,12 @@ const postCart = async (req, res) => {
 }
 
 const getOrdenes = async (req, res) => {
+    const Number = parseInt(req.query.page) || 1;
+    const PageNumber = Math.max(Number, 1);
+    const pageSize = parseInt(req.query.size) || 100;
+    const offset = (PageNumber - 1) * pageSize;
     try {
-        const products = await query.ordenesCompras()
+        const products = await query.ordenesCompras(pageSize,offset)
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al obtener las ordenes de compra' });
