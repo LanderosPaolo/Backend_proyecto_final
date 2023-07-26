@@ -6,7 +6,7 @@ const postUser = async (req, res) => {
     try {
         const usuario = req.body;
         await query.addUser(usuario);
-        res.status(200).json({ mensaje: "Usuario creado con éxito" });
+        res.status(201).json({ mensaje: "Usuario creado con éxito" });
     } catch ({ code, message }) {
         console.log(message);
         res.status(code || 500).json({ error: message });
