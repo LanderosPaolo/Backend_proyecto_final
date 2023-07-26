@@ -62,7 +62,7 @@ const addToCart = async (id_usuario, datosBody) => {
         if (stockNuevo < 0) {
             const frase = `Producto: ${nombre}, número: ${numero}. No se agrega a la orden de compra.`
             console.log(frase)
-            detalle_sin_stock += frase + '\n';
+            detalle_sin_stock += frase + '<br/>';
 
         } else {
             const queryStock = 'UPDATE producto SET stock = $1 WHERE id_producto = $2'
@@ -83,14 +83,14 @@ const addToCart = async (id_usuario, datosBody) => {
         }
     }
 
-    let detalleP = detalle.map((objeto) => `id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${numbers.formatLatin(objeto.numero)}, cantidad: ${numbers.formatLatin(objeto.cantidad)}, precio: ${numbers.formatLatin(objeto.precio)}, total: ${numbers.formatLatin(objeto.totalUnitario)},`).join('\n');
-    detalleP += `\nFecha de compra: ${fecha_venta}\nDirección de entrega: ${direccion}`;
-    const detalle_casi_final = "Registro de orden de compra: \n" + detalleP + '\n' + "El total a pagar corresponde a: " + numbers.formatLatin(total);
+    let detalleP = detalle.map((objeto) => `id_producto: ${objeto.id_producto}, nombre: ${objeto.nombre.toUpperCase()}, número: ${numbers.formatLatin(objeto.numero)}, cantidad: ${numbers.formatLatin(objeto.cantidad)}, precio: ${numbers.formatLatin(objeto.precio)}, total: ${numbers.formatLatin(objeto.totalUnitario)}.`).join('<br/>');
+    detalleP += `<br/>Fecha de compra: ${fecha_venta}<br/>Dirección de entrega: ${direccion}`;
+    const detalle_casi_final = "Registro de orden de compra: <br/>" + detalleP + '<br/>' + "El total a pagar corresponde a: " + numbers.formatLatin(total);
 
     //En caso de que no exista stock o que si exista 
     let detalle_final;
     if (detalle_sin_stock.length != 0) {
-        detalle_final = detalle_casi_final + "\n ----------------\n" + "Comics que no fueron agregados por falta de stock: \n" + detalle_sin_stock;
+        detalle_final = detalle_casi_final + "<br/> ----------------<br/>" + "Comics que no fueron agregados por falta de stock: <br/>" + detalle_sin_stock;
     } else {
         detalle_final = detalle_casi_final
     }
