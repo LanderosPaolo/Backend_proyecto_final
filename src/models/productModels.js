@@ -24,12 +24,15 @@ const modifyProduct = async (id, newInfo) => {
     }
 };
 
-const getProducts = async (id_usuario) => {
+const getProducts = async (id_usuario, pageSize, offset) => {
+
     const queryText = `
         SELECT p.*, l.id_producto IS NOT NULL AS likes
         FROM producto AS p
-        LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 order by p.id_producto desc`;
-    const queryParams = [id_usuario];
+        LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 
+        order by p.id_producto desc
+        LIMIT $2 OFFSET $3`;
+    const queryParams = [id_usuario, pageSize,offset];
     try {
         const response = await pool.query(queryText, queryParams);
         const rows = response.rows;

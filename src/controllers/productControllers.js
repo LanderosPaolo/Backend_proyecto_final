@@ -27,8 +27,13 @@ const editProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     const { id_usuario } = req.datosToken;
+    const Number = parseInt(req.query.pageNumber) || 1;
+    const PageNumber = Math.max(Number, 1);
+    const pageSize = parseInt(req.query.pageSize) || 100;
+    const offset = (PageNumber - 1) * pageSize;
+
     try {
-        const products = await query.getProducts(id_usuario)
+        const products = await query.getProducts(id_usuario, pageSize,offset)
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ mensaje: 'Error al obtener los productos' });
@@ -36,7 +41,7 @@ const getProducts = async (req, res) => {
 }
 const getPublicaciones = async (req, res) => {
     try {
-        
+
         const products = await query.getPublicaciones()
         //console.log(products)
         return res.status(200).json(products);
