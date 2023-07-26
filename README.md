@@ -18,7 +18,7 @@ Backend para una aplicación de venta de comics y envío físico, llamada comics
    - [Rutas de Likes](#rutas-de-likes)
    - [Rutas del Carrito](#rutas-del-carrito)
    - [Rutas de Órdenes](#rutas-de-órdenes)
-6. [Desarrollo](#desarrollo)
+6. [Uso](#uso)
 
 Haz clic en los enlaces para saltar directamente a la sección que deseas leer. ¡Disfruta explorando el proyecto de comicskites!
 
@@ -28,18 +28,21 @@ Haz clic en los enlaces para saltar directamente a la sección que deseas leer. 
 
 ## Instalación
 
-1. Clonar el repositorio:
+Backend:
 
-```bash
-git clone `https://github.com/LanderosPaolo/Backend_proyecto_final`
-cd `backend_proyecto_final`
-```
+1. Clona el repositorio del Backend:  `https://github.com/LanderosPaolo/Backend_proyecto_final`
+2. Ingresa al directorio del proyecto: `backend_proyecto_final`
+3. Instala las dependencias: `npm install`
 
-2. Instalar las dependencias:
+   
+* Nota: Si desea que la API interactue con el Frontend, realizar la siguiente instalación.
 
-```bash
-npm install
-```
+Frontend: 
+
+1. Clona el repositorio del frontend: `git clone https://github.com/Leonardo-villagran/comicskite_front`
+2. Ingresa al directorio del proyecto: `cd comicskite_front`
+3. Instala las dependencias: `npm install`
+
 
 ## Configuración
 
@@ -106,3 +109,17 @@ npm run dev
 ```
 
 El servidor se ejecutará en la ruta `http://localhost:3000/`.
+
+La API de nuestro proyecto está documentada utilizando Swagger a través de un contrato, lo que nos permite tener una interfaz para explorar las rutas y los datos necesarios para interactuar con la API. Se puede acceder a la documentación a través de la ruta:
+
+```
+docs/contrato.yaml
+```
+   * Nota: Se puede interactuar con el contrato a través de la herramienta Preview Swagger de VsCode. 
+
+## Despliegue
+
+Se puede acceder a la aplicación desplegada (Frontend, Backend y Base de datos) en Render.com, desde la siguiente dirección:
+
+[https://react-comicskites.onrender.com/](https://react-comicskites.onrender.com/)
+
