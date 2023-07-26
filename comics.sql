@@ -68,10 +68,10 @@ CREATE TABLE IF NOT EXISTS "estado" (
 
 INSERT INTO "estado" ( "nombre") VALUES
 	( 'No procesado'),
-	( 'Con problemas'),
+	( 'Pendiente'),
 	( 'En traslado'),
 	( 'Entregado'),
-	('Eliminado');
+	('Cancelado');
 	
 	CREATE TABLE IF NOT EXISTS "orden_compra" (
 	"id_orden_compra" SERIAL PRIMARY KEY,
