@@ -6,10 +6,10 @@ const postUser = async (req, res) => {
     try {
         const usuario = req.body;
         await query.addUser(usuario);
-        res.status(201).json({ mensaje: "Usuario creado con éxito" });
+        res.status(200).json({ mensaje: "Usuario creado con éxito" });
     } catch ({ code, message }) {
         console.log(message);
-        res.status(code || 500).json(message);
+        res.status(code || 500).json({ error: message });
     }
 }
 
@@ -33,8 +33,9 @@ const getUserInfo = async (req, res) => {
         const { id_usuario } = req.datosToken;
         const response = await query.getUserById(id_usuario)
         return res.status(200).json(response);
-    } catch (error) {
-        return res.status(500).json({ mensaje: 'Error al procesar la solicitud' });
+    } catch ({ code, message }) {
+        console.log(message);
+        res.status(code || 500).send(message);
     }
 }
 

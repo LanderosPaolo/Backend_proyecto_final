@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 function credencialVerify(req, res, next) {
     if (!req.body.email || !req.body.contrasena) {
         console.log("Credenciales incompletas debe ingresar el email y password.");
-        res.status(401).json({ message: 'Credenciales incompletas debe ingresar el email y password.' });
+        res.status(400).json({ message: 'Credenciales incompletas debe ingresar el email y password.' });
     } else {
         console.log('Credenciales existen (email y password), puede continuar.')
         next();
