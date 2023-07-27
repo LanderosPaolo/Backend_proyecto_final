@@ -11,12 +11,12 @@ router.post('/iniciar_sesion', middleware.credencialVerify, users.loginUser);
 router.get('/perfil', middleware.tokenValidation, users.getUserInfo);
 
 //Products
-router.post('/nuevo_producto', middleware.tokenValidation, products.postProduct);
-router.put('/editar_producto/:id_producto', middleware.tokenValidation, products.editProduct);
+router.post('/nuevo_producto', middleware.tokenValidation, products.postProduct); //Solo Administrador
+router.put('/editar_producto/:id_producto', middleware.tokenValidation, products.editProduct); //Solo Administrador
 router.get('/productos', middleware.tokenValidation, products.getProducts);
 router.get('/detalles/:id_producto', middleware.tokenValidation, products.getProductById);
 router.get('/favoritos', middleware.tokenValidation, products.getFavoritos)
-router.get('/publicaciones', middleware.tokenValidation, products.getPublicaciones);
+router.get('/publicaciones', middleware.tokenValidation, products.getPublicaciones); //Solo Administrador
 router.get('/producto/:id_producto', middleware.tokenValidation, products.getProductoModificar);
 
 //likes
@@ -27,8 +27,8 @@ router.delete('/dislikes/:id_producto', middleware.tokenValidation, likes.delete
 router.post('/carrito', middleware.tokenValidation, cart.postCart);
 
 //ordenes
-router.get('/orden_compras', middleware.tokenValidation, cart.getOrdenes)
-router.put('/estado', middleware.tokenValidation, cart.putEstado)
-router.get('/estados', middleware.tokenValidation, cart.getEstados)
+router.get('/orden_compras', middleware.tokenValidation, cart.getOrdenes) //Solo Administrador
+router.put('/estado', middleware.tokenValidation, cart.putEstado) //Solo Administrador
+router.get('/estados', middleware.tokenValidation, cart.getEstados) //Solo Administrador
 
 module.exports = router;

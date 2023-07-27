@@ -3,6 +3,10 @@ const query = require('../models/productModels');
 
 const postProduct = async (req, res) => {
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
         const { id_usuario } = req.datosToken;
         const productInfo = req.body
         await query.addProduct(productInfo, id_usuario)
@@ -14,6 +18,10 @@ const postProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
         const { id_producto } = req.params;
         const data = req.body;
         const result = await query.modifyProduct(id_producto, data);
@@ -41,6 +49,10 @@ const getProducts = async (req, res) => {
 
 const getPublicaciones = async (req, res) => {
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
         const Number = parseInt(req.query.page) || 1;
         const PageNumber = Math.max(Number, 1);
         const pageSize = parseInt(req.query.size) || 100;

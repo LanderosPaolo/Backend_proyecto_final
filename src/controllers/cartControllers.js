@@ -15,11 +15,18 @@ const postCart = async (req, res) => {
 }
 
 const getOrdenes = async (req, res) => {
-    const Number = parseInt(req.query.page) || 1;
-    const PageNumber = Math.max(Number, 1);
-    const pageSize = parseInt(req.query.size) || 100;
-    const offset = (PageNumber - 1) * pageSize;
+
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
+    
+        const Number = parseInt(req.query.page) || 1;
+        const PageNumber = Math.max(Number, 1);
+        const pageSize = parseInt(req.query.size) || 100;
+        const offset = (PageNumber - 1) * pageSize;
+
         const products = await query.ordenesCompras(pageSize,offset)
         return res.status(200).json(products);
     } catch ({ code, message }) {
@@ -28,6 +35,10 @@ const getOrdenes = async (req, res) => {
 }
 const getEstados = async (req, res) => {
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
         const estados = await query.obtenerEstados()
         return res.status(200).json(estados);
     } catch ({ code, message }) {
@@ -36,6 +47,10 @@ const getEstados = async (req, res) => {
 }
 const putEstado = async (req, res) => {
     try {
+        const { administrador } = req.datosToken;
+        if (administrador===0){
+            throw { code: 403, message: 'Acceso prohibido' };
+        }
         const datosBody = req.body;
         const { id_usuario } = req.datosToken;
         console.log(datosBody);
