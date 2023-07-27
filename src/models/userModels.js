@@ -74,9 +74,6 @@ const getUserById = async (id) => {
     const queryParams = [id];
     try {
         const response = await pool.query(queryText, queryParams);
-        if (!response) {
-            throw { code: 404, message: 'Usuario no encontrado' };
-        }
         user = response.rows[0];
         rowCount = response.rowCount;
         const { email, nombre, apellido, direccion, telefono } = user;

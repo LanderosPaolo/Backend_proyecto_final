@@ -9,8 +9,8 @@ const postCart = async (req, res) => {
         detalle_final=await query.addToCart(id_usuario, datosBody);
         return res.status(200).json({ mensaje: 'Orden de compra generada correctamente',
         detalle_final: detalle_final });
-    } catch (error) {
-        return res.status(500).json({ mensaje: error.message });
+    } catch ({ code, message }) {
+        return res.status(code || 500).json({ error: message });
     }
 }
 
@@ -22,16 +22,16 @@ const getOrdenes = async (req, res) => {
     try {
         const products = await query.ordenesCompras(pageSize,offset)
         return res.status(200).json(products);
-    } catch (error) {
-        return res.status(500).json({ mensaje: 'Error al obtener las ordenes de compra' });
+    } catch ({ code, message }) {
+        return res.status(code || 500).json({ error: message });
     }
 }
 const getEstados = async (req, res) => {
     try {
         const estados = await query.obtenerEstados()
         return res.status(200).json(estados);
-    } catch (error) {
-        return res.status(500).json({ mensaje: 'Error al obtener los estados' });
+    } catch ({ code, message }) {
+        return res.status(code || 500).json({ error: message });
     }
 }
 const putEstado = async (req, res) => {
@@ -41,8 +41,8 @@ const putEstado = async (req, res) => {
         console.log(datosBody);
         orden_compra_nueva=await query.changeEstado(id_usuario, datosBody);
         return res.status(200).json(orden_compra_nueva);
-    } catch (error) {
-        return res.status(500).json({ mensaje: error.message });
+    } catch ({ code, message }) {
+        return res.status(code || 500).json({ error: message });
     }
 }
 

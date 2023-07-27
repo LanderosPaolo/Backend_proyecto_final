@@ -4,6 +4,9 @@ const addProduct = async (comicInfo, id_usuario) => {
     const { nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock } = comicInfo;
     const queryText = 'INSERT INTO producto VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)';
     const queryParams = [nombre, numero, imagen_pequena, imagen_grande, detalle, precio, stock, id_usuario];
+    if ( !nombre || !numero || !imagen_pequena || !imagen_grande || !detalle || !precio || !stock ) {
+        throw { code: 400, message: 'Los datos enviados son incorrectos o faltan datos obligatorios.' };
+    }
     try {
         const response = await pool.query(queryText, queryParams);
         return response;
@@ -20,9 +23,10 @@ const modifyProduct = async (id, newInfo) => {
         const response = await pool.query(queryText, queryParams);
         return response;
     } catch (error) {
-        throw { code: 500, message: 'Error al modificar el producto' };
+        throw { code: 500, message: 'error de sistema' };
     }
 };
+
 
 const getProducts = async (id_usuario, pageSize, offset) => {
 
@@ -32,20 +36,20 @@ const getProducts = async (id_usuario, pageSize, offset) => {
         LEFT JOIN likes AS l ON p.id_producto = l.id_producto AND l.id_usuario = $1 
         order by p.id_producto desc
         LIMIT $2 OFFSET $3`;
-    const queryParams = [id_usuario, pageSize,offset];
+    const queryParams = [id_usuario, pageSize, offset];
     try {
         const response = await pool.query(queryText, queryParams);
         const rows = response.rows;
-        // console.log(rows);
         return rows;
     } catch (error) {
         throw { code: 500, message: 'Error al obtener los productos' };
     }
 };
-const getPublicaciones = async (pageSize,offset) => {
+
+const getPublicaciones = async (pageSize, offset) => {
     const queryText = `
         SELECT p.* FROM producto AS p order by p.id_producto desc  LIMIT $1 OFFSET $2`;
-    const queryParams = [pageSize,offset];
+    const queryParams = [pageSize, offset];
     try {
         const response = await pool.query(queryText, queryParams);
         const rows = response.rows;
@@ -91,10 +95,6 @@ const productDetails = async (id_producto, id_usuario) => {
     const queryParams = [id_usuario, id_producto]
     try {
         const response = await pool.query(queryText, queryParams);
-        //console.log(response.rows[0])
-        if (!response) {
-            throw { code: 404, message: 'Producto no encontrado' };
-        }
         return response.rows[0];
     } catch (error) {
         throw { code: 500, message: 'Error al obtener los detalles del producto' };

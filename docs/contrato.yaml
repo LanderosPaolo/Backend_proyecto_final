@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
   title: API proyecto final - Desafío LATAM.
-  description: Esta API se encarga de almacenar información de comics para su venta en una base
+  description: Esta API se encarga de almacenar información de comics en la base
     de datos.
   version: 1.0.0
 servers:
-- url: http://localhost:3000/
+- url: https://localhost:3000/
 tags:
 - name: Sección pública
 
@@ -46,16 +46,20 @@ paths:
                   description: Contraseña del usuario.
         required: true
       responses:
-        200:
+        201:
           description: Usuario creado con éxito.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  mensaje:
                     type: string
                     description: Mensaje de confirmación del registro.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        409:
+          $ref: '#/components/responses/Conflict'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -92,7 +96,12 @@ paths:
                     description: Token enviado
                   token:
                     type: string
-                    description: Token de acceso para autenticar las solicitudes.
+                    description: Token de acceso para autenticar las 
+                      solicitudes.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -129,6 +138,8 @@ paths:
                     type: string
                     format: email
                     description: Correo electronico del usuario.
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -141,7 +152,24 @@ paths:
         web.
       security:
         - BearerAuth: []
-      parameters: []
+      parameters:
+        - name: page
+          in: query
+          description: Número de página.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          description: Cantidad de productos por página).
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
       responses:
         200:
           description: Devuela la lista de productos
@@ -151,6 +179,8 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/producto'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
         500:
           $ref: '#/components/responses/ServerError'
 
@@ -176,6 +206,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/producto'
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
 
@@ -187,7 +219,24 @@ paths:
       summary: Obtener productos favoritos del usuario
       security:
         - BearerAuth: []
-      parameters: []
+      parameters:
+        - name: page
+          in: query
+          description: Número de página.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          description: Cantidad de productos por página).
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
       responses:
         200:
           description: Devuelve los productos marcados con "like"
@@ -197,6 +246,8 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/producto'
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -216,6 +267,8 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/ordenes_compras'
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -240,6 +293,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/producto_modificar'
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
 
@@ -268,6 +323,10 @@ paths:
                   message:
                     type: string
                     description: Producto agregado.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
         
@@ -298,6 +357,8 @@ paths:
                   message:
                     type: string
                     description: Like agregado correctamente.
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
 
@@ -334,6 +395,8 @@ paths:
                     description: orden de compra generada correctamente.
                   detalle_final:
                     type: object
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
   
@@ -360,6 +423,8 @@ paths:
       responses:
         200:
           description: Producto modificado.
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
           
@@ -379,6 +444,8 @@ paths:
       responses:
         200:
           description: Estado cambiado.
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
   
@@ -409,6 +476,8 @@ paths:
                   message:
                     type: string
                     description: Borrado.
+        401:
+          $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
 
@@ -416,14 +485,17 @@ components:
 
   responses:
     Unauthorized:
-      description: (Unauthorized) no existe autorización o el token no es válido
+      description: ( Unauthorized ) No existe autorización o el token no es 
+        válido.
     NotFound:
-      description: (NotFound) no se encontró la información
+      description: ( NotFound ) No se encontró la información.
     BadRequest:
-      description: (BadRequest) los datos enviados son incorrectos o hay datos 
-        obligatorios no enviados
+      description: ( BadRequest ) Los datos enviados son incorrectos o hay datos 
+        obligatorios no enviados.
     ServerError:
-      description: Error en el servidor
+      description: Error en el servidor.
+    Conflict:
+      description: ( Conflict ) Email ya registrado.
       
   schemas:
     estado:
