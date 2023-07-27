@@ -1,5 +1,6 @@
 const request = require('supertest')
-const server = require('../../index');
+// const server = require('../../index');
+const server = require('../index');
 
 //En caso de usar token propio, reemplazar aquí
 const tokenDePrueba = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo1LCJhZG1pbmlzdHJhZG9yIjoxLCJlbWFpbCI6InBhb2xvbGFuZGVyb3NAZ21haWwuY29tIiwiaWF0IjoxNjkwMzE3NDcxfQ.3gX-f6NcIbUMlfe0970tNqQJLr_7aQaGK7p-4147J2I'

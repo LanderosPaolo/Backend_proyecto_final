@@ -2,8 +2,10 @@ require('dotenv').config;
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const routes = require('./src/routes/routes');
-const databaseMiddleware = require('./src/middleware/databasereport');
+// const routes = require('./src/routes/routes');
+const reoutes = require('./routes/routes')
+// const databaseMiddleware = require('./src/middleware/databasereport');
+const databaseMiddleware = require('./middleware/databasereport');
 
 // Definir el entorno de ejecución (development, production, etc.)
 const environment = process.env.NODE_ENV || 'development';
