@@ -29,7 +29,17 @@ const tokenValidation = (req, res, next) =>{
     }
 }
 
+const isNormalUser = (req, res, next) => {
+    const { administrador } = req.datosToken;
+    if (administrador !== 1) {
+        console.log("Acceso no autorizado. Solo los administradores pueden acceder a esta ruta.");
+        return res.status(403).json({ message: 'Acceso no autorizado. Solo los administradores pueden acceder a esta ruta.' });
+    }
+    next();
+}
+
 module.exports = {
     tokenValidation,
-    credencialVerify
+    credencialVerify,
+    isNormalUser
 }
