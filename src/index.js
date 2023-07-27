@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 // const routes = require('./src/routes/routes');
-const reoutes = require('./routes/routes')
+const routes = require('./routes/routes')
 // const databaseMiddleware = require('./src/middleware/databasereport');
 const databaseMiddleware = require('./middleware/databasereport');
 
