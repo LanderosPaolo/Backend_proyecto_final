@@ -24,6 +24,7 @@ app.use('/', routes)
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
     console.log(`Tipo de ambiente: ${environment}`);
+    console.log(`Base de datos en el puerto: ${process.env.DB_PORT}`);
 })
 
 module.exports = app;

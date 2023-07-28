@@ -50,6 +50,7 @@ Crea un archivo `.env` en el directorio raíz del proyecto y agrega las siguient
 ```
 ## Local
 PORT=3000
+DB_PORT=5432
 DB_HOST=localhost
 DB_USER=postgres
 DB_PASSWORD=postgres

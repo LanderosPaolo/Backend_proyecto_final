@@ -1,5 +1,4 @@
-/* CREATE DATABASE comics*/
-/* CREATE DATABASE comics*/
+-- comics.sql
 
 -- Tabla usuario
 CREATE TABLE IF NOT EXISTS "usuario" (
