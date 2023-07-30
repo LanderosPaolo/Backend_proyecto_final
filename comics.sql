@@ -21,7 +21,7 @@ VALUES
 	('yonofui@legion.cl', 'Yono', 'Fui', 'Siempre viva 742', '2132314234', '$2a$10$jmEt4XfcBVsPwK4XpWBhjepEKZ9TuxiAzkdRNiFSdEnHg07jBi3vC', 0),
 	('paololanderos@gmail.com', 'Paolo', 'Landeros', 'siempre viva 742', '23423423', '$2a$10$iq7C7YUM9N6WaKixoGFd6Os.VJfYN6iJs34n/UChxoYA4vZnUfVEy', 1),
 	('admin@gmail.com', 'Admin', 'Administrator', 'Siempre viva 742', '+56 12234 1234', '$2a$10$JJKBtKGVz6xNfDxM.OjqNuPzgDSoGqD635G3jD9j2ULHbLvr4e6nS', 1),
-	('lorenzochacano@gmail.com', 'Lorenzo', 'Chacano', 'Siempre viva 742', '+56 12234 1234', '$2a$10$b5iFg4IA/m//DfMibSF2FOsdu89jZbUP.NzraDq0B1J7NS9vs4niC', 1);
+	('lorenzochacano@gmail.com', 'Lorenzo', 'Chacano', 'Siempre viva 742', '+56 12234 1234', '$2a$10$b5iFg4IA/m//DfMibSF2FOsdu89jZbUP.NzraDq0B1J7NS9vs4niC', 1),
 	('jromero21@gmail.com', 'Jorge', 'Romero', 'Siempre viva 742', '45345345', '$2a$10$ZJRiwBBKprsPynr/3myF8O945O7FPzLVukgYTG9TdUXsTqvKuTk66', 1),
 	('t.valle.c@biotico.cl', 'Tomás ', 'Valle', 'Siempre viva 742', '2132314234', '$2a$10$7eQW78lLnT3zpKUua.1LbOAF7TNQtxiVTsz.bV0JSeAj/eklTSgHq', 1),
 	('horuhekun@gmail.com', 'Jorge', 'San Román ', 'Madariaga 2981', '98629707', '$2a$10$UTTHfdUi1iJO4H/m4Agn2.caF/zJ.8uCXeXWpmPfXABI5yoJ7vKlC', 1);
