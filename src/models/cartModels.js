@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const { format } = require('date-fns');
 const userModel = require('../models/userModels');
-const numbers = require('../config/numbers');
+const numbers = require('../utils/numbers');
 
 const changeEstado= async (id_usuario, datosBody) => {
 
