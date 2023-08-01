@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Definimos las variables de entorno
-ENV PORT=3000
+ENV PORT=5000
 ENV DB_PORT=5432
 ENV DB_HOST=comicskitesdb
 ENV DB_USER=postgres
@@ -26,7 +26,7 @@ ENV JWT_SECRET=ultrasecreto
 RUN npm install
 
 # Exponemos el puerto 3000 para el backend
-EXPOSE 3000
+EXPOSE 5000
 
 # Comando para iniciar el servidor
 CMD ["node", "src/index.js"]

@@ -49,7 +49,7 @@ Frontend:
 Crea un archivo `.env` en el directorio raíz del proyecto y agrega las siguientes variables de entorno:
 ```
 ## Local
-PORT=3000
+PORT=5000
 DB_PORT=5432
 DB_HOST=localhost
 DB_USER=postgres
@@ -109,7 +109,7 @@ Para ejecutar el servidor en modo de desarrollo (con nodemon para recarga autom�
 npm run dev
 ```
 
-El servidor se ejecutará en la ruta `http://localhost:3000/`.
+El servidor se ejecutará en la ruta `http://localhost:5000/`.
 
 La API de nuestro proyecto está documentada utilizando Swagger a través de un contrato, lo que nos permite tener una interfaz para explorar las rutas y los datos necesarios para interactuar con la API. Se puede acceder a la documentación a través de la ruta:
 
