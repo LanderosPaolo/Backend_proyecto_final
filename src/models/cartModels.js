@@ -91,7 +91,7 @@ const addToCart = async (id_usuario, datosBody) => {
     //En caso de que no exista stock o que si exista 
     let detalle_final;
     if (detalle_sin_stock.length != 0) {
-        detalle_final = detalle_casi_final + "<br/> ----------------<br/>" + "Comics que no fueron agregados por falta de stock: <br/>" + detalle_sin_stock;
+        detalle_final = detalle_casi_final + "<br/> ----------------<br/>" + "Productos que no fueron agregados por falta de stock: <br/>" + detalle_sin_stock;
     } else {
         detalle_final = detalle_casi_final;
     }
